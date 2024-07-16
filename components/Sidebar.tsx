@@ -1,14 +1,13 @@
+"use client";
+
 import Link from "next/link"
 import {
-    Bell,
-    LineChart,
-    Package,
-    Package2,
-    ShoppingCart,
-    Users,
+    Clock,
+    Lightbulb,
+    Settings,
+    Speaker,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
     Card,
     CardContent,
@@ -18,9 +17,33 @@ import {
 } from "@/components/ui/card"
 import logo from "../public/images/logo.png"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
+export const navLinks = [
+    {
+        label: 'Overview',
+        href: '/',
+        icon: <Clock />
+    },
+    {
+        label: 'Campaign',
+        href: '/campaign',
+        icon: <Speaker />
+    },
+    {
+        label: 'Market Intelligence',
+        href: '/market',
+        icon: <Lightbulb />
+    },
+    {
+        label: 'Account Settings',
+        href: '/account',
+        icon: <Settings />
+    }
+]
 
 export default function Sidebar() {
+    const pathname = usePathname()
     return (
         <aside className="hidden border-r bg-muted/40 md:block">
             <div className="flex h-full max-h-screen flex-col gap-2">
@@ -33,34 +56,16 @@ export default function Sidebar() {
                 <div className="flex-1 flex flex-col mt-6"> {/* Added mt-6 for top margin */}
                     <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-4"> {/* Added gap-4 for space between nav items */}
                         <Button className="mb-4">New Campaign</Button> {/* Added mb-4 for bottom margin */}
-                        <Link
-                            href="#"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                        >
-                            <ShoppingCart className="h-4 w-4" />
-                            Overviews
-                        </Link>
-                        <Link
-                            href="#"
-                            className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
-                        >
-                            <Package className="h-4 w-4" />
-                            Campaigns{" "}
-                        </Link>
-                        <Link
-                            href="#"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                        >
-                            <Users className="h-4 w-4" />
-                            Market Intelligence
-                        </Link>
-                        <Link
-                            href="#"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                        >
-                            <LineChart className="h-4 w-4" />
-                            Account Settings
-                        </Link>
+                        {navLinks.map((navlink) => (
+                            <Link
+                                key={navlink.label}
+                                href={navlink.href}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname === navlink.href ? "bg-muted" : ""}`}
+                            >
+                                {navlink.icon}
+                                {navlink.label}
+                            </Link>
+                        ))}
                     </nav>
                 </div>
                 <div className="mt-auto p-4">

@@ -5,6 +5,18 @@ import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
 
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
+import MobileNav from "@/components/MobileNav";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,16 +30,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn("min-h-screen bg-background", inter.className)}>
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-          <Sidebar />
-          <div className="flex flex-col">
-            <Navbar />
-            {children}
+    <ClerkProvider>
+      <html lang="en">
+        <body className={cn("min-h-screen bg-background", inter.className)}>
+          <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+            <Sidebar />
+            <div className="flex flex-col">
+              <Navbar />
+              {children}
+            </div>
           </div>
-        </div>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
