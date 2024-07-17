@@ -11,7 +11,8 @@ import {
     useUser
 } from '@clerk/nextjs'
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { createUser } from "@/app/actions";
+import { users } from "@/db/schema";
+import db from "@/db/drizzle";
 
 // export default function Navbar() {
 //     const { isLoaded, isSignedIn, user } = useUser();
@@ -66,8 +67,25 @@ export default async function Navbar() {
 
     if (userId && user) {
         try {
-            await createUser();
-            console.log("User created or updated in the database");
+            // await createUser();
+            const newUser = await db
+                .insert(users)
+                .values({
+                    clerkId: userId,
+                    email: user.emailAddresses[0].emailAddress,
+                    profileImageUrl: user.imageUrl,
+                })
+                .onConflictDoUpdate({
+                    target: users.clerkId,
+                    set: {
+                        email: user.emailAddresses[0].emailAddress,
+                        profileImageUrl: user.imageUrl,
+                        updatedAt: new Date(),
+                    },
+                })
+                .returning();
+
+            console.log("User created or updated:", newUser[0]);
         } catch (error) {
             console.error("Error creating user in database:", error);
         }
