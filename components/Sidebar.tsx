@@ -60,7 +60,7 @@ export default function Sidebar() {
                             <Link
                                 key={navlink.label}
                                 href={navlink.href}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname === navlink.href ? "bg-muted" : ""}`}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${pathname === navlink.href ? "bg-muted text-primary" : ""}`}
                             >
                                 {navlink.icon}
                                 {navlink.label}
