@@ -1,22 +1,6 @@
 /** @format */
 
-// /** @format */
-
-// import { integer, text, boolean, pgTable, uuid } from "drizzle-orm/pg-core";
-
-// export const users = pgTable("user", {
-//   id: uuid("id").primaryKey().defaultRandom(),
-// });
-
-import {
-  integer,
-  text,
-  boolean,
-  pgTable,
-  uuid,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { text, pgTable, uuid, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
