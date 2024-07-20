@@ -1,12 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function CampaignCreation() {
     return (
         <section className="p-4 sm:p-6 md:p-10">
             <h1 className="text-primary font-bold text-xl mb-4">Create New Campaign</h1>
             <form className="max-w-2xl space-y-4">
+                <Label>Campaign Name</Label>
                 <Input type="text" placeholder="e.g The Future now" className="w-full" />
+                <Label>Campaign Description</Label>
+                <Textarea />
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                     <Input type="date" placeholder="dd/mm/yy" className="w-full" />
                     <Input type="date" placeholder="dd/mm/yy" className="w-full" />
