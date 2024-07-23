@@ -59,17 +59,17 @@ export default async function Navbar() {
                 </form>
             </div>
             {!userId ? (
-            <div className="flex gap-2">
-                <SignInButton>
-                    <Button>Sign In</Button>
-                </SignInButton>
-                <SignUpButton>
-                    <Button variant="outline">Sign Up</Button>
-                </SignUpButton>
-            </div>
-        ) : (
-            <UserButton />
-        )}
+                <div className="flex gap-2">
+                    <SignInButton>
+                        <Button>Sign In</Button>
+                    </SignInButton>
+                    <SignUpButton>
+                        <Button variant="outline">Sign Up</Button>
+                    </SignUpButton>
+                </div>
+            ) : (
+                <UserButton />
+            )}
         </header>
     )
 }

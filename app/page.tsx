@@ -2,6 +2,7 @@
 import { DateOverview } from "@/components/DateOverview";
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -23,7 +24,9 @@ export default function Home() {
           <p className="text-sm text-muted-foreground">
             No activity yet. Create a new campaign to get started
           </p>
-          <Button className="mt-4">New Campaign</Button>
+          <Link href="/campaign/create">
+            <Button className="mt-4 w-full">New Campaign</Button> {/* Added mb-4 for bottom margin */}
+          </Link>
         </div>
       </div>
     </main>
