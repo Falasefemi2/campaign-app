@@ -3,9 +3,13 @@ import { DateOverview } from "@/components/DateOverview";
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from '@clerk/nextjs';
+import { auth } from "@clerk/nextjs/server";
 
 
 export default function Home() {
+  const { userId } = auth();
+
   return (
 
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -17,16 +21,15 @@ export default function Home() {
         className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm" x-chunk="dashboard-02-chunk-1"
       >
         <div className="flex flex-col items-center gap-1 text-center">
-          {/* <h3 className="text-2xl font-bold tracking-tight">
-            You have no products
-          </h3> */}
           <Search size={350} />
           <p className="text-sm text-muted-foreground">
             No activity yet. Create a new campaign to get started
           </p>
-          <Link href="/campaign/create">
-            <Button className="mt-4 w-full">New Campaign</Button> {/* Added mb-4 for bottom margin */}
-          </Link>
+          {userId && (
+            <Link href={`/campaign/${userId}/create`}>
+              <Button className="mt-4 w-full">New Campaign</Button>
+            </Link>
+          )}
         </div>
       </div>
     </main>

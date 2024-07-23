@@ -14,7 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { DatePicker } from "../_components/DatePicker";
+import { DatePicker } from "../../../../components/DatePicker";
 import { useRef, useState } from "react";
 import { createCampaign } from "@/lib/action";
 import Link from "next/link";

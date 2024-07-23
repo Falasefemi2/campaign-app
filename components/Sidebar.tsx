@@ -18,6 +18,7 @@ import {
 import logo from "../public/images/logo.png"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
+import { CampaignButton } from "./CampaignButton";
 
 export const navLinks = [
     {
@@ -55,9 +56,7 @@ export default function Sidebar() {
                 </div>
                 <div className="flex-1 flex flex-col mt-6"> {/* Added mt-6 for top margin */}
                     <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-4"> {/* Added gap-4 for space between nav items */}
-                        <Link href="/campaign/create">
-                            <Button className="mb-4 w-full">New Campaign</Button> {/* Added mb-4 for bottom margin */}
-                        </Link>
+                        <CampaignButton />
                         {navLinks.map((navlink) => (
                             <Link
                                 key={navlink.label}
