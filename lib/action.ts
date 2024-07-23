@@ -8,6 +8,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { campaignSchema } from "./campaignSchema";
 import { fromZodError } from "zod-validation-error";
+import { Campaign } from "@/components/CreateCampaignTable";
 
 export async function createCampaign(formData: FormData) {
   const { userId: clerkUserId } = auth();
@@ -108,7 +109,7 @@ export async function createCampaign(formData: FormData) {
 //   redirect("/campaign");
 // }
 
-export async function fetchAllCampaigns() {
+export async function fetchAllCampaigns(): Promise<Campaign[]> {
   const { userId: clerkUserId } = auth();
 
   if (!clerkUserId) throw new Error("User not authenticated");

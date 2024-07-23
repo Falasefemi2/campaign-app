@@ -29,18 +29,18 @@ import {
 import { Eye, Pencil, Search, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-interface Campaign {
+export interface Campaign {
     id: string;
     userId: string;
     campaignName: string;
-    campaignDescription: string;
-    startDate: Date;
-    endDate: Date;
-    digestCampaign: boolean;
-    linkedKeywords: string[];
+    campaignDescription: string | null;  // Allow null
+    startDate: string;  // Changed from Date to string
+    endDate: string;    // Changed from Date to string
+    digestCampaign: boolean | null;  // Allow null
+    linkedKeywords: unknown;  // Changed from string[] to unknown
     dailyDigest: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date | null;  // Allow null
+    updatedAt: Date | null;  // Allow null
 }
 
 interface CampaignsTableProps {
