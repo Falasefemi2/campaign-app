@@ -28,6 +28,13 @@ import {
 } from "@/components/ui/table"
 import { Eye, Pencil, Search, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CampaignActions } from "./CampaignActions";
+import { useRouter } from "next/navigation";
+import { useTransition, useState } from "react";
+import { deleteCampaign } from "@/lib/action";
+import { useFormStatus } from "react-dom";
+import { Heart, Loader2 } from "lucide-react";
+
 
 export interface Campaign {
     id: string;
@@ -96,7 +103,7 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
                                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                 <DropdownMenuItem>View</DropdownMenuItem>
                                                 <DropdownMenuItem>Edit</DropdownMenuItem>
-                                                <DropdownMenuItem>Delete</DropdownMenuItem>
+                                                <CampaignActions campaignId={campaign.id} />
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
@@ -111,10 +118,10 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
                                             <Pencil className="h-4 w-4" />
                                             <span className="sr-only">Edit</span>
                                         </Button>
-                                        <Button size="icon" variant="ghost">
-                                            <Trash className="h-4 w-4" />
-                                            <span className="sr-only">Delete</span>
-                                        </Button>
+                                        <DeleteCampaignButton
+                                            campaignId={campaign.id}
+                                            campaignName={campaign.campaignName}
+                                        />
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -130,3 +137,108 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
         </Card>
     )
 }
+
+
+interface DeleteCampaignButtonProps {
+    campaignId: string;
+    campaignName: string;
+}
+
+function DeleteCampaignButton({ campaignId, campaignName }: DeleteCampaignButtonProps) {
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleDelete = () => {
+        setIsModalOpen(true);
+    };
+
+    const confirmDelete = () => {
+        startTransition(async () => {
+            await deleteCampaign(campaignId);
+            router.refresh();
+            setIsModalOpen(false);
+        });
+    };
+
+    return (
+        <>
+            <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleDelete}
+                disabled={isPending}
+            >
+                <Trash className="h-4 w-4" />
+                <span className="sr-only">{isPending ? "Deleting..." : "Delete"}</span>
+            </Button>
+            <DeleteCampaignModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={confirmDelete}
+                campaignName={campaignName}
+                isPending={isPending}
+            />
+        </>
+
+    );
+}
+
+
+
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+
+interface DeleteCampaignModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    campaignName: string;
+    isPending: boolean;
+
+}
+
+function DeleteCampaignModal({ isOpen, onClose, onConfirm, campaignName, isPending }: DeleteCampaignModalProps) {
+    const { pending } = useFormStatus();
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Stop Campaign</DialogTitle>
+                    <DialogDescription>
+                        Are you sure you want to delete {campaignName} campaign?
+                        This action cannot be undone.
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="sm:justify-start">
+                    <Button type="button" variant="secondary" onClick={onClose} disabled={isPending}>
+                        Cancel
+                    </Button>
+                    {isPending ? (
+                        <Button disabled variant="destructive">
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Please Wait
+                        </Button>
+                    ) : (
+                        <Button type="button" variant="destructive" onClick={onConfirm}>
+                            <span className="text-sm whitespace-normal text-center">Delete Campaign</span>
+                        </Button>
+                    )}
+
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
+
+
+

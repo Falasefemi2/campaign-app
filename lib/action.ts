@@ -3,11 +3,9 @@
 
 import db from "@/db/drizzle";
 import { campaigns, users } from "@/db/schema";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { campaignSchema } from "./campaignSchema";
-import { fromZodError } from "zod-validation-error";
 import { Campaign } from "@/components/CreateCampaignTable";
 
 export async function createCampaign(formData: FormData) {
@@ -73,4 +71,11 @@ export async function fetchAllCampaigns(): Promise<Campaign[]> {
     .where(eq(campaigns.userId, userId));
 
   return userCampaigns;
+}
+
+export async function deleteCampaign(campaignId: string) {
+  const { userId: clerkUserId } = auth();
+  if (!clerkUserId) throw new Error("User not authenticated");
+
+  await db.delete(campaigns).where(eq(campaigns.id, campaignId));
 }
