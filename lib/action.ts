@@ -29,9 +29,13 @@ export async function createCampaign(formData: FormData) {
   const startDate = formData.get("startDate") as string;
   const endDate = formData.get("endDate") as string;
   const digestCampaign = formData.get("digestCampaign") === "on";
+  // const linkedKeywords = (formData.get("linkedKeywords") as string)
+  //   .split(",")
+  //   .filter(Boolean);
   const linkedKeywords = (formData.get("linkedKeywords") as string)
     .split(",")
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((keyword) => keyword.trim());
   const dailyDigest = formData.get("dailyDigest") as string;
 
   await db.insert(campaigns).values({
