@@ -50,65 +50,6 @@ export async function createCampaign(formData: FormData) {
   redirect("/campaign");
 }
 
-// export async function createCampaign(formData: FormData) {
-//   const { userId: clerkUserId } = auth();
-
-//   if (!clerkUserId) throw new Error("User not authenticated");
-
-//   // Fetch the user from our database using the Clerk ID
-//   const dbUser = await db
-//     .select()
-//     .from(users)
-//     .where(eq(users.clerkId, clerkUserId))
-//     .limit(1);
-
-//   if (dbUser.length === 0) throw new Error("User not found in database");
-
-//   const userId = dbUser[0].id; // This is the UUID from our database
-
-//   // Convert FormData to a plain object
-//   const formDataObject = Object.fromEntries(formData.entries());
-
-//   // Validate and parse the form data using the schema
-//   const result = campaignSchema.safeParse({
-//     ...formDataObject,
-//     digestCampaign: formData.get("digestCampaign") === "on",
-//     linkedKeywords: (formData.get("linkedKeywords") as string)
-//       .split(",")
-//       .filter(Boolean),
-//   });
-
-//   if (!result.success) {
-//     // If validation fails, throw an error with details
-//     const errorMessage = fromZodError(result.error).message;
-//     throw new Error(`Invalid form data: ${errorMessage}`);
-//   }
-
-//   // Use the validated and parsed data
-//   const {
-//     campaignName,
-//     campaignDescription,
-//     startDate,
-//     endDate,
-//     digestCampaign,
-//     linkedKeywords,
-//     dailyDigest,
-//   } = result.data;
-
-//   await db.insert(campaigns).values({
-//     userId,
-//     campaignName,
-//     campaignDescription,
-//     startDate: new Date(startDate),
-//     endDate: new Date(endDate),
-//     digestCampaign,
-//     linkedKeywords,
-//     dailyDigest,
-//   });
-
-//   redirect("/campaign");
-// }
-
 export async function fetchAllCampaigns(): Promise<Campaign[]> {
   const { userId: clerkUserId } = auth();
 

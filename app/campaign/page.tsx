@@ -1,3 +1,4 @@
+import CampaignStatus from "@/components/CampaignStatus";
 import CampaignTable from "@/components/CreateCampaignTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,11 +14,7 @@ export default async function CampaignPage() {
         <main className="p-4 sm:p-6 md:p-10">
             <h1 className="text-primary font-bold text-xl mb-4">All Campaigns</h1>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full space-y-4 sm:space-y-0">
-                <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" className="border-primary text-primary">All (90)</Button>
-                    <Button variant="outline" className="border-primary text-primary">Inactive (90)</Button>
-                    <Button variant="outline" className="border-primary text-primary">Active (90)</Button>
-                </div>
+                <CampaignStatus campaigns={campaigns} />
                 <div className="relative w-full sm:w-auto">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
