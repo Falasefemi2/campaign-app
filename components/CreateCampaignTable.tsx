@@ -55,6 +55,8 @@ interface CampaignsTableProps {
 }
 
 export default function CampaignTable({ campaigns }: CampaignsTableProps) {
+    const { userId } = useAuth();
+
     return (
         <Card className="mt-10">
             <CardContent>
@@ -102,7 +104,9 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                 <DropdownMenuItem>View</DropdownMenuItem>
-                                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                                <Link href={`/campaign/${userId}/edit`}>
+                                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                                </Link>
                                                 <CampaignActions campaignId={campaign.id} />
                                             </DropdownMenuContent>
                                         </DropdownMenu>
@@ -114,10 +118,16 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
                                             <Eye className="h-4 w-4" />
                                             <span className="sr-only">View</span>
                                         </Button>
-                                        <Button size="icon" variant="ghost">
-                                            <Pencil className="h-4 w-4" />
-                                            <span className="sr-only">Edit</span>
-                                        </Button>
+                                        <Link href={`/campaign/${userId}/edit`}>
+                                            <Button size="icon" variant="ghost">
+                                                <Pencil className="h-4 w-4" />
+                                                <span className="sr-only">Edit</span>
+                                                {/* <Pencil className="h-4 w-4" />
+                                            <Link href={`/campaign/${userId}/edit`}>
+                                                <span className="sr-only">Edit</span>
+                                            </Link> */}
+                                            </Button>
+                                        </Link>
                                         <DeleteCampaignButton
                                             campaignId={campaign.id}
                                             campaignName={campaign.campaignName}
@@ -195,6 +205,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
+import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 
 interface DeleteCampaignModalProps {
     isOpen: boolean;
@@ -210,16 +222,16 @@ function DeleteCampaignModal({ isOpen, onClose, onConfirm, campaignName, isPendi
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="flex items-center justify-center flex-col">
                 <DialogHeader>
-                    <DialogTitle>Stop Campaign</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className="text-center mb-14">Stop Campaign</DialogTitle>
+                    <DialogDescription className="text-center">
                         Are you sure you want to delete {campaignName} campaign?
                         This action cannot be undone.
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter className="sm:justify-start">
-                    <Button type="button" variant="secondary" onClick={onClose} disabled={isPending}>
+                <DialogFooter className="sm:justify-start mt-10">
+                    <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
                         Cancel
                     </Button>
                     {isPending ? (
