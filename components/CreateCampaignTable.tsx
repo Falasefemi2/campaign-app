@@ -44,7 +44,7 @@ export interface Campaign {
     startDate: string;  // Changed from Date to string
     endDate: string;    // Changed from Date to string
     digestCampaign: boolean | null;  // Allow null
-    linkedKeywords: unknown;  // Changed from string[] to unknown
+    linkedKeywords: string[] | unknown;
     dailyDigest: string;
     createdAt: Date | null;  // Allow null
     updatedAt: Date | null;  // Allow null

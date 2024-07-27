@@ -115,8 +115,8 @@ export async function editCampaign(campaignId: string, formData: FormData) {
     .set({
       campaignName,
       campaignDescription,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
+      startDate: startDate,
+      endDate: endDate,
       digestCampaign,
       linkedKeywords,
       dailyDigest,
