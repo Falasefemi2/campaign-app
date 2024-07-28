@@ -1,51 +1,25 @@
-import db from "@/db/drizzle";
-import { campaigns } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
-import { notFound } from "next/navigation";
 import EditCampaignForm from "./editCampageForm";
+import { getCampaign } from "@/lib/action";
 
-// export default async function EditCampaignPage({ params }: { params: { id: string } }) {
-//     const campaign = await db.select().from(campaigns).where(eq(campaigns.id, params.id)).limit(1);
-
-//     if (!campaign.length) {
-//         notFound();
-//     }
-
-//     return <EditCampaignForm campaign={campaign[0]} />;
-// }
-
-
-
-// export default async function EditCampaignPage({ params }: { params: { id: string } }) {
-//     const campaign = await db
-//         .select()
-//         .from(campaigns)
-//         .where(sql`CAST(${campaigns.id} AS TEXT) = ${params.id}`)
-//         .limit(1);
-
-//     if (!campaign.length) {
-//         notFound();
-//     }
-
-//     return <EditCampaignForm campaign={campaign[0]} />;
-// }
 
 export default async function EditCampaignPage({ params }: { params: { id: string } }) {
-    console.log("Attempting to fetch campaign with ID:", params.id);
+    console.log("Attempting to edit campaign with ID:", params.id);
 
+    try {
+        const campaign = await getCampaign(params.id);
 
-    const campaign = await db
-        .select()
-        .from(campaigns)
-        .where(eq(campaigns.id, params.id))
-        .limit(1);
+        if (!campaign) {
+            console.log("No campaign found for ID:", params.id);
+            return <div>Campaign not found</div>;
+        }
 
-    console.log("Query result:", campaign);
-
-    if (!campaign.length) {
-        console.log("Campaign not found, calling notFound()");
-        notFound();
+        return (
+            <div>
+                <EditCampaignForm campaign={campaign} />
+            </div>
+        );
+    } catch (error) {
+        console.error("Error fetching campaign:", error);
+        return <div>Error loading campaign. Please try again.</div>;
     }
-
-    return <EditCampaignForm campaign={campaign[0]} />;
 }

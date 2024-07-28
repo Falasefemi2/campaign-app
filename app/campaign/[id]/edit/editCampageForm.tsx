@@ -66,6 +66,7 @@ export default function EditCampaignForm({ campaign }: { campaign: Campaign }) {
                         <Label htmlFor="startDate" className="mb-2">Start Date</Label>
                         <DatePicker
                             name="startDate"
+                            selected={startDate}
                             onChange={(date) => setStartDate(date)}
                         />
                     </div>
@@ -74,6 +75,7 @@ export default function EditCampaignForm({ campaign }: { campaign: Campaign }) {
                         <DatePicker
                             name="endDate"
                             onChange={(date) => setEndDate(date)}
+                            selected={endDate}
                         />
                     </div>
                 </div>

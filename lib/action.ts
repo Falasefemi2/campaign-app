@@ -54,27 +54,22 @@ export async function createCampaign(formData: FormData) {
 
 export async function fetchAllCampaigns(): Promise<Campaign[]> {
   const { userId: clerkUserId } = auth();
-
   if (!clerkUserId) throw new Error("User not authenticated");
 
-  // Fetch the user from our database using the Clerk ID
-  const dbUser = await db
+  const user = await db
     .select()
     .from(users)
     .where(eq(users.clerkId, clerkUserId))
     .limit(1);
 
-  if (dbUser.length === 0) throw new Error("User not found in database");
+  if (user.length === 0) throw new Error("User not found");
 
-  const userId = dbUser[0].id; // This is the UUID from our database
-
-  // Fetch all campaigns for the user
-  const userCampaigns = await db
+  const allCampaigns = await db
     .select()
     .from(campaigns)
-    .where(eq(campaigns.userId, userId));
+    .where(eq(campaigns.userId, user[0].id));
 
-  return userCampaigns;
+  return allCampaigns;
 }
 
 export async function deleteCampaign(campaignId: string) {
@@ -126,4 +121,17 @@ export async function editCampaign(campaignId: string, formData: FormData) {
 
   // You might want to return the updated campaign or a success message
   return { success: true, message: "Campaign updated successfully" };
+}
+
+export async function getCampaign(id: string) {
+  const { userId: clerkUserId } = auth();
+  if (!clerkUserId) throw new Error("User not authenticated");
+
+  const campaign = await db
+    .select()
+    .from(campaigns)
+    .where(eq(campaigns.id, id))
+    .limit(1);
+
+  return campaign[0] || null;
 }

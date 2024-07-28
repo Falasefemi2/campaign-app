@@ -104,7 +104,7 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                 <DropdownMenuItem>View</DropdownMenuItem>
-                                                <Link href={`/campaign/${userId}/edit`}>
+                                                <Link href={`/campaign/${campaign.id}/edit`}>
                                                     <DropdownMenuItem>Edit</DropdownMenuItem>
                                                 </Link>
                                                 <CampaignActions campaignId={campaign.id} />
@@ -118,7 +118,7 @@ export default function CampaignTable({ campaigns }: CampaignsTableProps) {
                                             <Eye className="h-4 w-4" />
                                             <span className="sr-only">View</span>
                                         </Button>
-                                        <Link href={`/campaign/${userId}/edit`}>
+                                        <Link href={`/campaign/${campaign.id}/edit`}>
                                             <Button size="icon" variant="ghost">
                                                 <Pencil className="h-4 w-4" />
                                                 <span className="sr-only">Edit</span>
